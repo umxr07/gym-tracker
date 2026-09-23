@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
   <title>Gym Tracker</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,10 +50,12 @@
 
     body {
       font-family: "Inter", sans-serif;
+
       background:
         radial-gradient(circle at 15% 0%, #111b35 0%, transparent 35%),
         radial-gradient(circle at 85% 20%, #170f2c 0%, transparent 30%),
         var(--bg);
+
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
@@ -70,36 +73,42 @@
       font-family: "Space Grotesk", sans-serif;
     }
 
-    /* HEADER */
+    /* =========================
+       HEADER
+    ========================= */
 
     .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 22px;
+      text-align: center;
+
+      padding: 10px 0 28px;
       margin-bottom: 24px;
+
       border-bottom: 1px solid var(--border-soft);
     }
 
     .header h1 {
-      font-size: 27px;
-      letter-spacing: -0.02em;
+      font-size: 32px;
+      letter-spacing: -0.03em;
     }
 
     .header p {
       color: var(--muted);
       font-size: 14px;
-      margin-top: 5px;
+      margin-top: 8px;
     }
 
-    /* SECTIONS */
+    /* =========================
+       SECTIONS
+    ========================= */
 
     .section {
       background: linear-gradient(180deg, #111722, #0b0f16);
       border: 1px solid var(--border);
       border-radius: var(--radius);
+
       padding: 22px;
       margin-bottom: 18px;
+
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
     }
 
@@ -109,7 +118,9 @@
       margin-bottom: 16px;
     }
 
-    /* MUSCLE PICKER */
+    /* =========================
+       MUSCLE PICKER
+    ========================= */
 
     .muscle-boxes {
       display: flex;
@@ -121,17 +132,22 @@
       --c: var(--muted);
 
       color: var(--c);
+
       padding: 11px 20px;
       min-width: 96px;
 
       text-align: center;
+
       font-weight: 600;
       font-size: 14px;
 
       border-radius: var(--radius-sm);
+
       cursor: grab;
+
       user-select: none;
       -webkit-user-select: none;
+
       touch-action: none;
 
       background: color-mix(in srgb, var(--c) 10%, transparent);
@@ -142,8 +158,12 @@
 
     .muscle:hover {
       transform: translateY(-2px);
-      background: color-mix(in srgb, var(--c) 18%, transparent);
-      box-shadow: 0 0 20px color-mix(in srgb, var(--c) 35%, transparent);
+
+      background:
+        color-mix(in srgb, var(--c) 18%, transparent);
+
+      box-shadow:
+        0 0 20px color-mix(in srgb, var(--c) 35%, transparent);
     }
 
     .muscle:active {
@@ -156,8 +176,24 @@
 
     .muscle.selected {
       transform: translateY(-2px);
-      background: color-mix(in srgb, var(--c) 22%, transparent);
-      box-shadow: 0 0 22px color-mix(in srgb, var(--c) 40%, transparent);
+
+      background:
+        color-mix(in srgb, var(--c) 22%, transparent);
+
+      box-shadow:
+        0 0 22px color-mix(in srgb, var(--c) 40%, transparent);
+    }
+
+    /* LOCKED */
+
+    body:not(.edit-mode) .muscle {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    body:not(.edit-mode) .muscle:hover {
+      transform: none;
+      box-shadow: none;
     }
 
     .muscle.legs {
@@ -190,11 +226,17 @@
 
     .instructions {
       margin-top: 18px;
+
       padding: 12px 14px;
+
       border-radius: var(--radius-sm);
+
       border-left: 2px solid var(--muted-2);
+
       background: rgba(255, 255, 255, 0.02);
+
       color: var(--muted);
+
       font-size: 13px;
       line-height: 1.6;
     }
@@ -203,7 +245,9 @@
       color: var(--text);
     }
 
-    /* CALENDAR HEADER */
+    /* =========================
+       CALENDAR HEADER
+    ========================= */
 
     .calendar-header {
       margin-bottom: 18px;
@@ -211,8 +255,10 @@
 
     .calendar-navigation {
       display: flex;
+
       justify-content: space-between;
       align-items: center;
+
       gap: 15px;
     }
 
@@ -223,15 +269,23 @@
 
     .month-subtitle {
       color: var(--muted-2);
+
       margin-top: 4px;
+
       font-size: 12px;
       text-transform: uppercase;
     }
 
-    /* MONTH BUTTONS */
+    /* =========================
+       MONTH BUTTONS
+    ========================= */
 
     .month-buttons {
       display: flex;
+
+      align-items: center;
+      justify-content: center;
+
       gap: 8px;
     }
 
@@ -239,13 +293,22 @@
       width: 40px;
       height: 40px;
 
+      padding: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
       border-radius: 9px;
+
       border: 1px solid var(--border);
 
       background: #0b1018;
       color: var(--text);
 
-      font-size: 20px;
+      font-size: 25px;
+      line-height: 1;
+
       cursor: pointer;
 
       transition: 0.15s ease;
@@ -253,43 +316,152 @@
 
     .month-btn:hover {
       border-color: var(--legs);
+
       color: var(--legs);
-      box-shadow: 0 0 15px rgba(0, 170, 255, 0.2);
+
+      box-shadow:
+        0 0 15px rgba(0, 170, 255, 0.2);
     }
 
-    /* CALENDAR */
+    /* =========================
+       EDIT BUTTON
+    ========================= */
+
+    .calendar-tools {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 8px;
+    }
+
+    .edit-btn {
+      width: 40px;
+      height: 40px;
+
+      padding: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 9px;
+
+      border: 1px solid var(--border);
+
+      background: #0b1018;
+      color: var(--muted);
+
+      font-size: 17px;
+
+      cursor: pointer;
+
+      transition: 0.15s ease;
+    }
+
+    .edit-btn:hover {
+      border-color: var(--legs);
+      color: var(--legs);
+
+      box-shadow:
+        0 0 15px rgba(0, 170, 255, 0.2);
+    }
+
+    body.edit-mode .edit-btn {
+      border-color: var(--legs);
+      color: var(--legs);
+
+      background:
+        color-mix(in srgb, var(--legs) 10%, transparent);
+
+      box-shadow:
+        0 0 18px rgba(0, 170, 255, 0.15);
+    }
+
+    /* EDIT STATUS */
+
+    .edit-status {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 6px;
+
+      margin-top: 12px;
+
+      font-size: 11px;
+      color: var(--muted-2);
+
+      transition: 0.2s ease;
+    }
+
+    .edit-status-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: var(--muted-2);
+    }
+
+    body.edit-mode .edit-status {
+      color: var(--legs);
+    }
+
+    body.edit-mode .edit-status-dot {
+      background: var(--legs);
+
+      box-shadow:
+        0 0 10px var(--legs);
+    }
+
+    /* =========================
+       CALENDAR
+    ========================= */
 
     .calendar {
       display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
+
+      grid-template-columns:
+        repeat(7, minmax(0, 1fr));
+
       gap: 7px;
     }
 
     .weekday {
       text-align: center;
+
       color: var(--muted-2);
+
       font-size: 11px;
       font-weight: 600;
+
       padding: 6px 4px 10px;
     }
 
     .day {
       min-height: 112px;
+
       padding: 8px;
 
       background: var(--bg-2);
+
       border: 1px solid var(--border-soft);
+
       border-radius: 10px;
 
       transition: 0.15s ease;
 
-      /* IMPORTANT FOR MOBILE */
       touch-action: manipulation;
     }
 
     .day:hover {
       border-color: var(--border);
-      box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.015);
+
+      box-shadow:
+        inset 0 0 15px rgba(255, 255, 255, 0.015);
     }
 
     .day.empty {
@@ -299,16 +471,27 @@
 
     .day-number {
       display: inline-block;
+
       font-size: 12px;
       font-weight: 600;
+
       color: var(--muted);
+
       margin-bottom: 8px;
     }
 
     .day.today {
       border-color: var(--legs);
-      background: color-mix(in srgb, var(--legs) 6%, var(--bg-2));
-      box-shadow: 0 0 15px rgba(0, 170, 255, 0.08);
+
+      background:
+        color-mix(
+          in srgb,
+          var(--legs) 6%,
+          var(--bg-2)
+        );
+
+      box-shadow:
+        0 0 15px rgba(0, 170, 255, 0.08);
     }
 
     .day.today .day-number {
@@ -317,20 +500,35 @@
 
     .day.drag-over {
       border-color: white;
+
       background: rgba(255, 255, 255, 0.06);
-      box-shadow: 0 0 18px rgba(255, 255, 255, 0.08);
+
+      box-shadow:
+        0 0 18px rgba(255, 255, 255, 0.08);
     }
 
     .day.mobile-target {
       border-color: var(--legs);
-      box-shadow: 0 0 20px rgba(0, 170, 255, 0.2);
+
+      box-shadow:
+        0 0 20px rgba(0, 170, 255, 0.2);
     }
 
-    /* WORKOUT TAGS */
+    /* LOCKED CALENDAR */
+
+    body:not(.edit-mode) .day {
+      cursor: default;
+    }
+
+    /* =========================
+       WORKOUT TAGS
+    ========================= */
 
     .workouts {
       display: flex;
+
       flex-wrap: wrap;
+
       gap: 4px;
     }
 
@@ -341,18 +539,32 @@
       font-weight: 600;
 
       padding: 4px 7px;
+
       border-radius: 5px;
 
       color: var(--c);
-      background: color-mix(in srgb, var(--c) 14%, transparent);
-      border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
 
-      cursor: pointer;
+      background:
+        color-mix(in srgb, var(--c) 14%, transparent);
+
+      border:
+        1px solid
+        color-mix(in srgb, var(--c) 40%, transparent);
+
       user-select: none;
     }
 
+    body.edit-mode .workout-tag {
+      cursor: pointer;
+    }
+
+    body:not(.edit-mode) .workout-tag {
+      cursor: default;
+    }
+
     .workout-tag:hover {
-      background: color-mix(in srgb, var(--c) 26%, transparent);
+      background:
+        color-mix(in srgb, var(--c) 26%, transparent);
     }
 
     .workout-tag.legs {
@@ -383,19 +595,28 @@
       --c: var(--all);
     }
 
-    /* STATS */
+    /* =========================
+       STATS
+    ========================= */
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
       gap: 12px;
+
       margin-bottom: 22px;
     }
 
     .stat-card {
       background: #0b1018;
+
       border: 1px solid var(--border);
+
       border-radius: 10px;
+
       padding: 16px;
     }
 
@@ -406,39 +627,53 @@
 
     .stat-number {
       font-family: "Space Grotesk", sans-serif;
+
       font-size: 26px;
       font-weight: 700;
+
       margin-top: 5px;
     }
 
-    /* PROGRESS */
+    /* =========================
+       PROGRESS
+    ========================= */
 
     .progress-list {
       display: flex;
+
       flex-direction: column;
+
       gap: 16px;
     }
 
     .progress-top {
       display: flex;
+
       justify-content: space-between;
       align-items: center;
+
       margin-bottom: 7px;
+
       font-size: 13px;
       font-weight: 600;
     }
 
     .dot {
       display: inline-block;
+
       width: 8px;
       height: 8px;
+
       border-radius: 50%;
+
       margin-right: 8px;
+
       background: var(--c);
     }
 
     .progress-count {
       color: var(--muted-2);
+
       font-size: 12px;
       font-weight: 500;
     }
@@ -446,9 +681,13 @@
     .progress-bar {
       width: 100%;
       height: 8px;
+
       background: var(--bg-2);
+
       border: 1px solid var(--border-soft);
+
       border-radius: 20px;
+
       overflow: hidden;
     }
 
@@ -459,9 +698,12 @@
       width: 0%;
 
       border-radius: 20px;
+
       background: var(--c);
 
-      box-shadow: 0 0 10px color-mix(in srgb, var(--c) 45%, transparent);
+      box-shadow:
+        0 0 10px
+        color-mix(in srgb, var(--c) 45%, transparent);
 
       transition: width 0.5s ease;
     }
@@ -494,23 +736,32 @@
       --c: var(--all);
     }
 
-    /* WEEKLY STATS */
+    /* =========================
+       WEEKLY STATS
+    ========================= */
 
     .weekly-stats {
       display: flex;
+
       flex-direction: column;
+
       gap: 10px;
     }
 
     .week-card {
       display: grid;
-      grid-template-columns: 90px 1fr 80px;
+
+      grid-template-columns:
+        90px 1fr 80px;
+
       align-items: center;
 
       padding: 13px 15px;
 
       background: #0b1018;
+
       border: 1px solid var(--border);
+
       border-radius: 10px;
     }
 
@@ -521,42 +772,61 @@
 
     .week-bar {
       height: 7px;
+
       background: #171d27;
+
       border-radius: 20px;
+
       overflow: hidden;
+
       margin: 0 15px;
     }
 
     .week-fill {
       height: 100%;
       width: 0%;
+
       background: var(--legs);
+
       border-radius: 20px;
-      box-shadow: 0 0 10px rgba(0, 170, 255, 0.4);
+
+      box-shadow:
+        0 0 10px rgba(0, 170, 255, 0.4);
+
       transition: width 0.5s ease;
     }
 
     .week-count {
       color: var(--muted);
+
       font-size: 11px;
+
       text-align: right;
     }
 
-    /* RESET */
+    /* =========================
+       RESET
+    ========================= */
 
     .actions {
       display: flex;
+
       justify-content: flex-end;
+
       margin-top: 18px;
     }
 
     #resetBtn {
       background: transparent;
+
       color: var(--chest);
 
-      border: 1px solid color-mix(in srgb, var(--chest) 45%, transparent);
+      border:
+        1px solid
+        color-mix(in srgb, var(--chest) 45%, transparent);
 
       padding: 9px 16px;
+
       border-radius: var(--radius-sm);
 
       font-weight: 600;
@@ -566,10 +836,18 @@
     }
 
     #resetBtn:hover {
-      background: color-mix(in srgb, var(--chest) 12%, transparent);
+      background:
+        color-mix(in srgb, var(--chest) 12%, transparent);
     }
 
-    /* MOBILE */
+    body:not(.edit-mode) #resetBtn {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
 
     @media (max-width: 700px) {
 
@@ -578,22 +856,32 @@
         padding: 20px 0 40px;
       }
 
+      .header {
+        padding-bottom: 24px;
+        margin-bottom: 20px;
+      }
+
       .header h1 {
-        font-size: 21px;
+        font-size: 26px;
       }
 
       .header p {
         font-size: 12px;
+        line-height: 1.5;
       }
 
       .muscle-boxes {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+
+        grid-template-columns:
+          repeat(3, 1fr);
       }
 
       .muscle {
         min-width: unset;
+
         padding: 10px 6px;
+
         font-size: 12px;
       }
 
@@ -603,12 +891,16 @@
 
       .weekday {
         font-size: 9px;
-        padding: 4px 2px 8px;
+
+        padding:
+          4px 2px 8px;
       }
 
       .day {
         min-height: 82px;
+
         padding: 5px;
+
         border-radius: 7px;
       }
 
@@ -618,6 +910,7 @@
 
       .workout-tag {
         font-size: 7px;
+
         padding: 3px 5px;
       }
 
@@ -630,15 +923,23 @@
       }
 
       .stats-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns:
+          1fr 1fr;
       }
 
       .week-card {
-        grid-template-columns: 65px 1fr 60px;
+        grid-template-columns:
+          65px 1fr 60px;
       }
 
       .week-bar {
         margin: 0 8px;
+      }
+
+      .edit-btn,
+      .month-btn {
+        width: 36px;
+        height: 36px;
       }
     }
 
@@ -663,12 +964,25 @@
       }
 
       .calendar-navigation {
-        align-items: flex-start;
+        align-items: center;
       }
 
-      .month-btn {
-        width: 34px;
-        height: 34px;
+      .month-title {
+        font-size: 17px;
+      }
+
+      .month-subtitle {
+        font-size: 9px;
+      }
+
+      .month-buttons {
+        gap: 5px;
+      }
+
+      .month-btn,
+      .edit-btn {
+        width: 32px;
+        height: 32px;
       }
 
       .stat-number {
@@ -676,7 +990,9 @@
       }
 
       .week-card {
-        grid-template-columns: 55px 1fr 55px;
+        grid-template-columns:
+          55px 1fr 55px;
+
         padding: 11px;
       }
 
@@ -715,32 +1031,43 @@
       }
     }
 
-    /* MOBILE DRAG GHOST */
+    /* =========================
+       MOBILE DRAG GHOST
+    ========================= */
 
     #dragGhost {
       position: fixed;
+
       z-index: 99999;
+
       pointer-events: none;
 
       display: none;
 
       padding: 10px 16px;
+
       border-radius: 9px;
 
       font-size: 13px;
       font-weight: 600;
 
-      background: rgba(17, 23, 34, 0.95);
-      border: 1px solid var(--legs);
+      background:
+        rgba(17, 23, 34, 0.95);
+
+      border:
+        1px solid var(--legs);
+
       color: var(--text);
 
       box-shadow:
         0 0 25px rgba(0, 170, 255, 0.35);
 
-      transform: translate(-50%, -50%);
+      transform:
+        translate(-50%, -50%);
     }
   </style>
 </head>
+
 
 <body>
 
@@ -749,10 +1076,13 @@
     <!-- HEADER -->
 
     <div class="header">
-      <div>
-        <h1>Gym Tracker</h1>
-        <p>Track your workouts. Build your body. Stay consistent.</p>
-      </div>
+
+      <h1>Gym Tracker</h1>
+
+      <p>
+        Track your workouts. Build your body. Stay consistent.
+      </p>
+
     </div>
 
 
@@ -766,45 +1096,63 @@
 
       <div class="muscle-boxes">
 
-        <div class="muscle legs" draggable="true" data-muscle="legs">
+        <div class="muscle legs"
+          draggable="true"
+          data-muscle="legs">
           Legs
         </div>
 
-        <div class="muscle chest" draggable="true" data-muscle="chest">
+        <div class="muscle chest"
+          draggable="true"
+          data-muscle="chest">
           Chest
         </div>
 
-        <div class="muscle shoulders" draggable="true" data-muscle="shoulders">
+        <div class="muscle shoulders"
+          draggable="true"
+          data-muscle="shoulders">
           Shoulders
         </div>
 
-        <div class="muscle triceps" draggable="true" data-muscle="triceps">
+        <div class="muscle triceps"
+          draggable="true"
+          data-muscle="triceps">
           Triceps
         </div>
 
-        <div class="muscle back" draggable="true" data-muscle="back">
+        <div class="muscle back"
+          draggable="true"
+          data-muscle="back">
           Back
         </div>
 
-        <div class="muscle biceps" draggable="true" data-muscle="biceps">
+        <div class="muscle biceps"
+          draggable="true"
+          data-muscle="biceps">
           Biceps
         </div>
 
-        <div class="muscle all" draggable="true" data-muscle="all">
+        <div class="muscle all"
+          draggable="true"
+          data-muscle="all">
           All
         </div>
 
       </div>
 
+
       <div class="instructions">
-        <strong>Drag & drop</strong>
-        a muscle group onto a calendar day.
-        Multiple groups can be added to one day.
-        Click a tag to remove it.
+
+        <strong>Edit Mode:</strong>
+        Click the pencil icon on the calendar to unlock editing.
+
         <br>
+
         <span class="mobile-help">
-          📱 On mobile: drag a muscle onto a day, or tap a muscle then tap a day.
+          📱 On mobile: drag a muscle onto a day,
+          or tap a muscle then tap a day.
         </span>
+
       </div>
 
     </div>
@@ -819,32 +1167,81 @@
         <div class="calendar-navigation">
 
           <div>
-            <div class="month-title" id="monthTitle">
+
+            <div
+              class="month-title"
+              id="monthTitle">
               MONTH
             </div>
 
             <div class="month-subtitle">
               Your monthly workout log
             </div>
+
           </div>
 
-          <div class="month-buttons">
 
-            <button class="month-btn" id="prevMonth" title="Previous month">
-              ‹
+          <div class="calendar-tools">
+
+            <!-- EDIT -->
+
+            <button
+              class="edit-btn"
+              id="editBtn"
+              title="Enable editing"
+              aria-label="Enable editing">
+
+              ✏️
+
             </button>
 
-            <button class="month-btn" id="nextMonth" title="Next month">
-              ›
-            </button>
+
+            <!-- MONTH BUTTONS -->
+
+            <div class="month-buttons">
+
+              <button
+                class="month-btn"
+                id="prevMonth"
+                title="Previous month">
+
+                ‹
+
+              </button>
+
+              <button
+                class="month-btn"
+                id="nextMonth"
+                title="Next month">
+
+                ›
+
+              </button>
+
+            </div>
 
           </div>
 
         </div>
 
+
+        <div class="edit-status">
+
+          <span class="edit-status-dot"></span>
+
+          <span id="editStatusText">
+            Calendar locked
+          </span>
+
+        </div>
+
       </div>
 
-      <div class="calendar" id="calendar"></div>
+
+      <div
+        class="calendar"
+        id="calendar">
+      </div>
 
     </div>
 
@@ -857,36 +1254,51 @@
         Monthly statistics
       </div>
 
+
       <div class="stats-grid">
 
         <div class="stat-card">
+
           <div class="stat-label">
             Workout days
           </div>
 
-          <div class="stat-number" id="totalWorkoutDays">
+          <div
+            class="stat-number"
+            id="totalWorkoutDays">
             0
           </div>
+
         </div>
 
+
         <div class="stat-card">
+
           <div class="stat-label">
             Rest days
           </div>
 
-          <div class="stat-number" id="restDays">
+          <div
+            class="stat-number"
+            id="restDays">
             0
           </div>
+
         </div>
 
+
         <div class="stat-card">
+
           <div class="stat-label">
             Total sessions
           </div>
 
-          <div class="stat-number" id="totalSessions">
+          <div
+            class="stat-number"
+            id="totalSessions">
             0
           </div>
+
         </div>
 
       </div>
@@ -899,18 +1311,31 @@
         <div class="progress-item">
 
           <div class="progress-top">
+
             <span>
-              <span class="dot" style="--c:var(--legs)"></span>
+              <span
+                class="dot"
+                style="--c:var(--legs)">
+              </span>
+
               Legs
             </span>
 
-            <span class="progress-count" id="legs-count">
+            <span
+              class="progress-count"
+              id="legs-count">
               0/30 days
             </span>
+
           </div>
 
           <div class="progress-bar">
-            <div class="progress-fill legs" id="legs-progress"></div>
+
+            <div
+              class="progress-fill legs"
+              id="legs-progress">
+            </div>
+
           </div>
 
         </div>
@@ -919,18 +1344,31 @@
         <div class="progress-item">
 
           <div class="progress-top">
+
             <span>
-              <span class="dot" style="--c:var(--shoulders)"></span>
+              <span
+                class="dot"
+                style="--c:var(--shoulders)">
+              </span>
+
               Shoulders
             </span>
 
-            <span class="progress-count" id="shoulders-count">
+            <span
+              class="progress-count"
+              id="shoulders-count">
               0/30 days
             </span>
+
           </div>
 
           <div class="progress-bar">
-            <div class="progress-fill shoulders" id="shoulders-progress"></div>
+
+            <div
+              class="progress-fill shoulders"
+              id="shoulders-progress">
+            </div>
+
           </div>
 
         </div>
@@ -939,18 +1377,31 @@
         <div class="progress-item">
 
           <div class="progress-top">
+
             <span>
-              <span class="dot" style="--c:var(--chest)"></span>
+              <span
+                class="dot"
+                style="--c:var(--chest)">
+              </span>
+
               Chest
             </span>
 
-            <span class="progress-count" id="chest-count">
+            <span
+              class="progress-count"
+              id="chest-count">
               0/30 days
             </span>
+
           </div>
 
           <div class="progress-bar">
-            <div class="progress-fill chest" id="chest-progress"></div>
+
+            <div
+              class="progress-fill chest"
+              id="chest-progress">
+            </div>
+
           </div>
 
         </div>
@@ -959,18 +1410,31 @@
         <div class="progress-item">
 
           <div class="progress-top">
+
             <span>
-              <span class="dot" style="--c:var(--triceps)"></span>
+              <span
+                class="dot"
+                style="--c:var(--triceps)">
+              </span>
+
               Triceps
             </span>
 
-            <span class="progress-count" id="triceps-count">
+            <span
+              class="progress-count"
+              id="triceps-count">
               0/30 days
             </span>
+
           </div>
 
           <div class="progress-bar">
-            <div class="progress-fill triceps" id="triceps-progress"></div>
+
+            <div
+              class="progress-fill triceps"
+              id="triceps-progress">
+            </div>
+
           </div>
 
         </div>
@@ -979,18 +1443,31 @@
         <div class="progress-item">
 
           <div class="progress-top">
+
             <span>
-              <span class="dot" style="--c:var(--back)"></span>
+              <span
+                class="dot"
+                style="--c:var(--back)">
+              </span>
+
               Back
             </span>
 
-            <span class="progress-count" id="back-count">
+            <span
+              class="progress-count"
+              id="back-count">
               0/30 days
             </span>
+
           </div>
 
           <div class="progress-bar">
-            <div class="progress-fill back" id="back-progress"></div>
+
+            <div
+              class="progress-fill back"
+              id="back-progress">
+            </div>
+
           </div>
 
         </div>
@@ -999,18 +1476,31 @@
         <div class="progress-item">
 
           <div class="progress-top">
+
             <span>
-              <span class="dot" style="--c:var(--biceps)"></span>
+              <span
+                class="dot"
+                style="--c:var(--biceps)">
+              </span>
+
               Biceps
             </span>
 
-            <span class="progress-count" id="biceps-count">
+            <span
+              class="progress-count"
+              id="biceps-count">
               0/30 days
             </span>
+
           </div>
 
           <div class="progress-bar">
-            <div class="progress-fill biceps" id="biceps-progress"></div>
+
+            <div
+              class="progress-fill biceps"
+              id="biceps-progress">
+            </div>
+
           </div>
 
         </div>
@@ -1019,18 +1509,31 @@
         <div class="progress-item">
 
           <div class="progress-top">
+
             <span>
-              <span class="dot" style="--c:var(--all)"></span>
+              <span
+                class="dot"
+                style="--c:var(--all)">
+              </span>
+
               All
             </span>
 
-            <span class="progress-count" id="all-count">
+            <span
+              class="progress-count"
+              id="all-count">
               0/30 days
             </span>
+
           </div>
 
           <div class="progress-bar">
-            <div class="progress-fill all" id="all-progress"></div>
+
+            <div
+              class="progress-fill all"
+              id="all-progress">
+            </div>
+
           </div>
 
         </div>
@@ -1048,7 +1551,10 @@
         Weekly statistics
       </div>
 
-      <div class="weekly-stats" id="weeklyStats"></div>
+      <div
+        class="weekly-stats"
+        id="weeklyStats">
+      </div>
 
     </div>
 
@@ -1076,6 +1582,10 @@
 
 
   <script>
+
+    /* =========================
+       MUSCLES
+    ========================= */
 
     const muscles = {
 
@@ -1117,12 +1627,22 @@
     };
 
 
+    /* =========================
+       VARIABLES
+    ========================= */
+
     const now = new Date();
 
     let viewedYear = now.getFullYear();
+
     let viewedMonth = now.getMonth();
 
     let workoutData = {};
+
+    let selectedMuscle = null;
+
+    let editMode = false;
+
 
     const calendar =
       document.getElementById("calendar");
@@ -1136,21 +1656,90 @@
     const dragGhost =
       document.getElementById("dragGhost");
 
+    const editBtn =
+      document.getElementById("editBtn");
 
-    /* --------------------------------
+    const editStatusText =
+      document.getElementById("editStatusText");
+
+
+    /* =========================
        MOBILE DRAG VARIABLES
-    -------------------------------- */
+    ========================= */
 
     let touchMuscle = null;
+
     let touchDragging = false;
+
     let touchStartX = 0;
+
     let touchStartY = 0;
+
     let currentDropDay = null;
 
 
-    /* --------------------------------
+    /* =========================
+       EDIT MODE
+    ========================= */
+
+    function setEditMode(enabled) {
+
+      editMode = enabled;
+
+      document.body.classList.toggle(
+        "edit-mode",
+        editMode
+      );
+
+
+      if (editMode) {
+
+        editBtn.textContent = "✕";
+
+        editBtn.title = "Lock calendar";
+
+        editBtn.setAttribute(
+          "aria-label",
+          "Lock calendar"
+        );
+
+        editStatusText.textContent =
+          "Edit mode enabled";
+
+      } else {
+
+        editBtn.textContent = "✏️";
+
+        editBtn.title = "Enable editing";
+
+        editBtn.setAttribute(
+          "aria-label",
+          "Enable editing"
+        );
+
+        editStatusText.textContent =
+          "Calendar locked";
+
+        clearSelectedMuscle();
+
+      }
+
+    }
+
+
+    editBtn.addEventListener(
+      "click",
+      () => {
+
+        setEditMode(!editMode);
+
+      }
+    );
+
+
+    /* =========================
        STORAGE
-    -------------------------------- */
+    ========================= */
 
     function getStorageKey() {
 
@@ -1176,6 +1765,25 @@
 
       }
 
+
+      /*
+        Make sure every day's value is
+        always an array.
+
+        This prevents old/bad data from
+        causing replacement problems.
+      */
+
+      Object.keys(workoutData).forEach(day => {
+
+        if (!Array.isArray(workoutData[day])) {
+
+          workoutData[day] = [];
+
+        }
+
+      });
+
     }
 
 
@@ -1193,9 +1801,9 @@
     }
 
 
-    /* --------------------------------
+    /* =========================
        CALENDAR
-    -------------------------------- */
+    ========================= */
 
     function renderCalendar() {
 
@@ -1203,14 +1811,18 @@
 
       loadMonthData();
 
+
       const monthName =
         new Date(
           viewedYear,
           viewedMonth
         ).toLocaleString(
           "default",
-          { month: "long" }
+          {
+            month: "long"
+          }
         );
+
 
       const totalDays =
         new Date(
@@ -1218,6 +1830,7 @@
           viewedMonth + 1,
           0
         ).getDate();
+
 
       monthTitle.textContent =
         `${monthName.toUpperCase()} ${viewedYear}`;
@@ -1284,15 +1897,17 @@
 
 
       updateProgress();
+
       updateWeeklyStats();
+
       updateMonthlyStats();
 
     }
 
 
-    /* --------------------------------
+    /* =========================
        CREATE DAY
-    -------------------------------- */
+    ========================= */
 
     function createDay(dayNumber) {
 
@@ -1330,36 +1945,61 @@
 
 
       day.appendChild(number);
+
       day.appendChild(workouts);
 
 
+      /*
+        IMPORTANT:
+        Render ALL saved muscles.
+
+        Nothing gets replaced here.
+      */
+
       const savedWorkouts =
-        workoutData[dayNumber] || [];
+        Array.isArray(workoutData[dayNumber])
+          ? workoutData[dayNumber]
+          : [];
 
 
       savedWorkouts.forEach(muscle => {
 
-        addWorkoutTag(day, muscle);
+        if (muscles[muscle]) {
+
+          addWorkoutTag(
+            day,
+            muscle
+          );
+
+        }
 
       });
 
 
       if (savedWorkouts.length) {
 
-        day.classList.add("has-workouts");
+        day.classList.add(
+          "has-workouts"
+        );
 
       }
 
 
-      /* PC DRAG OVER */
+      /* =========================
+         DESKTOP DRAG OVER
+      ========================= */
 
       day.addEventListener(
         "dragover",
         event => {
 
+          if (!editMode) return;
+
           event.preventDefault();
 
-          day.classList.add("drag-over");
+          day.classList.add(
+            "drag-over"
+          );
 
         }
       );
@@ -1369,13 +2009,17 @@
         "dragleave",
         () => {
 
-          day.classList.remove("drag-over");
+          day.classList.remove(
+            "drag-over"
+          );
 
         }
       );
 
 
-      /* PC DROP */
+      /* =========================
+         DESKTOP DROP
+      ========================= */
 
       day.addEventListener(
         "drop",
@@ -1383,13 +2027,21 @@
 
           event.preventDefault();
 
-          day.classList.remove("drag-over");
+          day.classList.remove(
+            "drag-over"
+          );
+
+
+          if (!editMode) return;
+
 
           const muscle =
             event.dataTransfer
               .getData("text/plain");
 
+
           if (!muscles[muscle]) return;
+
 
           addWorkout(
             dayNumber,
@@ -1400,17 +2052,27 @@
       );
 
 
-      /* MOBILE TAP */
+      /* =========================
+         MOBILE TAP
+      ========================= */
 
       day.addEventListener(
         "click",
         event => {
 
+          if (!editMode) return;
+
+
           if (
-            event.target.closest(".workout-tag")
+            event.target.closest(
+              ".workout-tag"
+            )
           ) {
+
             return;
+
           }
+
 
           if (selectedMuscle) {
 
@@ -1432,28 +2094,59 @@
     }
 
 
-    /* --------------------------------
+    /* =========================
        ADD WORKOUT
-    -------------------------------- */
+    ========================= */
 
     function addWorkout(
       dayNumber,
       muscle
     ) {
 
+      if (!editMode) return;
+
       if (!muscles[muscle]) return;
 
 
-      if (!workoutData[dayNumber]) {
+      /*
+        Always get the existing array.
+
+        This is the important fix.
+
+        Example:
+
+        Day 23:
+        ["back"]
+
+        Add biceps:
+
+        ["back", "biceps"]
+
+        Back is NEVER replaced.
+      */
+
+      if (
+        !Array.isArray(
+          workoutData[dayNumber]
+        )
+      ) {
 
         workoutData[dayNumber] = [];
 
       }
 
 
+      const dayWorkouts =
+        workoutData[dayNumber];
+
+
+      /*
+        Prevent duplicate muscle
+        on the same day.
+      */
+
       if (
-        workoutData[dayNumber]
-          .includes(muscle)
+        dayWorkouts.includes(muscle)
       ) {
 
         return;
@@ -1461,49 +2154,154 @@
       }
 
 
-      workoutData[dayNumber].push(muscle);
+      /*
+        ADD instead of replacing.
+      */
+
+      dayWorkouts.push(muscle);
+
 
       saveData();
 
 
-      const day =
-        document.querySelector(
-          `.day[data-day="${dayNumber}"]`
-        );
+      /*
+        Re-render the day completely.
 
+        This guarantees that every existing
+        muscle stays visible.
+      */
 
-      if (!day) return;
-
-
-      addWorkoutTag(
-        day,
-        muscle
-      );
-
-
-      day.classList.add(
-        "has-workouts"
-      );
+      refreshDay(dayNumber);
 
 
       updateProgress();
+
       updateWeeklyStats();
+
       updateMonthlyStats();
 
     }
 
 
-    /* --------------------------------
+    /* =========================
+       REFRESH ONE DAY
+    ========================= */
+
+    function refreshDay(dayNumber) {
+
+      const oldDay =
+        document.querySelector(
+          `.day[data-day="${dayNumber}"]`
+        );
+
+
+      if (!oldDay) return;
+
+
+      const oldClass =
+        oldDay.className;
+
+
+      /*
+        Remove old day and recreate it.
+      */
+
+      oldDay.remove();
+
+
+      /*
+        Find correct calendar position
+        and insert the recreated day.
+      */
+
+      createDay(dayNumber);
+
+
+      const newDay =
+        document.querySelector(
+          `.day[data-day="${dayNumber}"]`
+        );
+
+
+      if (!newDay) return;
+
+
+      /*
+        createDay appends to calendar.
+
+        Move it to the correct grid position.
+      */
+
+      const allDays =
+        [
+          ...calendar.querySelectorAll(".day:not(.empty)")
+        ];
+
+
+      const emptyCount =
+        [
+          ...calendar.querySelectorAll(".day.empty")
+        ].length;
+
+
+      const targetIndex =
+        emptyCount + dayNumber - 1;
+
+
+      const reference =
+        calendar.children[
+          7 + targetIndex
+        ];
+
+
+      if (
+        reference &&
+        reference !== newDay
+      ) {
+
+        calendar.insertBefore(
+          newDay,
+          reference
+        );
+
+      }
+
+    }
+
+
+    /* =========================
        ADD TAG
-    -------------------------------- */
+    ========================= */
 
     function addWorkoutTag(
       day,
       muscle
     ) {
 
+      if (!muscles[muscle]) return;
+
+
       const workouts =
-        day.querySelector(".workouts");
+        day.querySelector(
+          ".workouts"
+        );
+
+
+      /*
+        Safety check:
+        don't create duplicate visual tags.
+      */
+
+      const existing =
+        [
+          ...workouts.children
+        ].find(
+          tag =>
+            tag.dataset.muscle === muscle
+        );
+
+
+      if (existing) return;
 
 
       const tag =
@@ -1514,12 +2312,17 @@
         `workout-tag ${muscles[muscle].colorClass}`;
 
 
+      tag.dataset.muscle = muscle;
+
+
       tag.textContent =
         muscles[muscle].name;
 
 
       tag.title =
-        "Click to remove";
+        editMode
+          ? "Click to remove"
+          : "Calendar locked";
 
 
       tag.addEventListener(
@@ -1528,10 +2331,15 @@
 
           event.stopPropagation();
 
+
+          if (!editMode) return;
+
+
           removeWorkout(
-            Number(day.dataset.day),
-            muscle,
-            tag
+            Number(
+              day.dataset.day
+            ),
+            muscle
           );
 
         }
@@ -1543,63 +2351,72 @@
     }
 
 
-    /* --------------------------------
+    /* =========================
        REMOVE WORKOUT
-    -------------------------------- */
+    ========================= */
 
     function removeWorkout(
       dayNumber,
-      muscle,
-      element
+      muscle
     ) {
 
-      if (!workoutData[dayNumber]) return;
+      if (!editMode) return;
+
+
+      if (
+        !Array.isArray(
+          workoutData[dayNumber]
+        )
+      ) {
+
+        return;
+
+      }
 
 
       workoutData[dayNumber] =
         workoutData[dayNumber]
           .filter(
-            item => item !== muscle
+            item =>
+              item !== muscle
           );
 
 
       if (
-        workoutData[dayNumber]
-          .length === 0
+        workoutData[dayNumber].length === 0
       ) {
 
         delete workoutData[dayNumber];
 
-        const day =
-          document.querySelector(
-            `.day[data-day="${dayNumber}"]`
-          );
-
-        if (day) {
-
-          day.classList.remove(
-            "has-workouts"
-          );
-
-        }
-
       }
 
 
-      element.remove();
-
       saveData();
 
+
+      /*
+        Re-render the day instead of manually
+        removing elements.
+
+        This prevents one muscle from
+        accidentally affecting another.
+      */
+
+      refreshDay(dayNumber);
+
+
       updateProgress();
+
       updateWeeklyStats();
+
       updateMonthlyStats();
 
     }
 
 
-    /* --------------------------------
+    /* =========================
        MONTHLY MUSCLE PROGRESS
-    -------------------------------- */
+    ========================= */
 
     function updateProgress() {
 
@@ -1618,6 +2435,11 @@
 
       Object.values(workoutData)
         .forEach(dayWorkouts => {
+
+          if (!Array.isArray(dayWorkouts)) {
+            return;
+          }
+
 
           dayWorkouts.forEach(muscle => {
 
@@ -1648,6 +2470,7 @@
           const count =
             counts[muscle];
 
+
           const percentage =
             (count / totalDays) * 100;
 
@@ -1668,9 +2491,9 @@
     }
 
 
-    /* --------------------------------
+    /* =========================
        MONTHLY STATS
-    -------------------------------- */
+    ========================= */
 
     function updateMonthlyStats() {
 
@@ -1686,6 +2509,9 @@
         Object.keys(workoutData)
           .filter(
             day =>
+              Array.isArray(
+                workoutData[day]
+              ) &&
               workoutData[day].length > 0
           )
           .length;
@@ -1697,8 +2523,14 @@
       Object.values(workoutData)
         .forEach(dayWorkouts => {
 
-          totalSessions +=
-            dayWorkouts.length;
+          if (
+            Array.isArray(dayWorkouts)
+          ) {
+
+            totalSessions +=
+              dayWorkouts.length;
+
+          }
 
         });
 
@@ -1727,9 +2559,9 @@
     }
 
 
-    /* --------------------------------
+    /* =========================
        WEEKLY STATS
-    -------------------------------- */
+    ========================= */
 
     function updateWeeklyStats() {
 
@@ -1765,7 +2597,10 @@
       ) {
 
         let startDay =
-          week * 7 - firstDay + 1;
+          week * 7 -
+          firstDay +
+          1;
+
 
         let endDay =
           startDay + 6;
@@ -1775,12 +2610,14 @@
           startDay = 1;
         }
 
+
         if (endDay > totalDays) {
           endDay = totalDays;
         }
 
 
         let workoutDays = 0;
+
         let sessions = 0;
 
 
@@ -1792,6 +2629,9 @@
 
           if (
             workoutData[day] &&
+            Array.isArray(
+              workoutData[day]
+            ) &&
             workoutData[day].length > 0
           ) {
 
@@ -1810,13 +2650,15 @@
 
 
         const percentage =
-          (workoutDays / numberOfDays) * 100;
+          (workoutDays / numberOfDays) *
+          100;
 
 
         const card =
           document.createElement("div");
 
-        card.className = "week-card";
+        card.className =
+          "week-card";
 
 
         const weekName =
@@ -1859,21 +2701,31 @@
           `${workoutDays}/${numberOfDays} days`;
 
 
-        card.appendChild(weekName);
-        card.appendChild(bar);
-        card.appendChild(count);
+        card.appendChild(
+          weekName
+        );
+
+        card.appendChild(
+          bar
+        );
+
+        card.appendChild(
+          count
+        );
 
 
-        weeklyStats.appendChild(card);
+        weeklyStats.appendChild(
+          card
+        );
 
       }
 
     }
 
 
-    /* --------------------------------
-       PC DRAGGING
-    -------------------------------- */
+    /* =========================
+       DESKTOP DRAGGING
+    ========================= */
 
     document
       .querySelectorAll(".muscle")
@@ -1883,10 +2735,20 @@
           "dragstart",
           event => {
 
+            if (!editMode) {
+
+              event.preventDefault();
+
+              return;
+
+            }
+
+
             event.dataTransfer.setData(
               "text/plain",
               box.dataset.muscle
             );
+
 
             box.classList.add(
               "dragging"
@@ -1910,17 +2772,16 @@
       });
 
 
-    /* --------------------------------
-       MOBILE TOUCH DRAGGING
-    -------------------------------- */
-
-    let selectedMuscle = null;
-
+    /* =========================
+       MOBILE SELECTION
+    ========================= */
 
     function clearSelectedMuscle() {
 
       document
-        .querySelectorAll(".muscle.selected")
+        .querySelectorAll(
+          ".muscle.selected"
+        )
         .forEach(box => {
 
           box.classList.remove(
@@ -1929,69 +2790,122 @@
 
         });
 
+
       selectedMuscle = null;
 
     }
 
 
-    function getDayFromPoint(x, y) {
+    /* =========================
+       FIND DAY
+    ========================= */
+
+    function getDayFromPoint(
+      x,
+      y
+    ) {
 
       const element =
-        document.elementFromPoint(x, y);
+        document.elementFromPoint(
+          x,
+          y
+        );
 
-      if (!element) return null;
 
-      const day =
-        element.closest(".day");
-
-      if (!day || day.classList.contains("empty")) {
+      if (!element) {
         return null;
       }
+
+
+      const day =
+        element.closest(
+          ".day"
+        );
+
+
+      if (
+        !day ||
+        day.classList.contains(
+          "empty"
+        )
+      ) {
+
+        return null;
+
+      }
+
 
       return day;
 
     }
 
 
+    /* =========================
+       START MOBILE DRAG
+    ========================= */
+
     function startMobileDrag(
       box,
       event
     ) {
 
+      if (!editMode) return;
+
+
       touchMuscle =
         box.dataset.muscle;
 
+
       touchDragging = false;
+
 
       touchStartX =
         event.clientX;
 
+
       touchStartY =
         event.clientY;
+
 
       currentDropDay = null;
 
     }
 
 
-    function moveMobileDrag(event) {
+    /* =========================
+       MOVE MOBILE DRAG
+    ========================= */
 
-      if (!touchMuscle) return;
+    function moveMobileDrag(
+      event
+    ) {
+
+      if (
+        !touchMuscle ||
+        !editMode
+      ) {
+
+        return;
+
+      }
 
 
       const dx =
-        event.clientX - touchStartX;
+        event.clientX -
+        touchStartX;
+
 
       const dy =
-        event.clientY - touchStartY;
+        event.clientY -
+        touchStartY;
+
 
       const distance =
         Math.sqrt(
-          dx * dx + dy * dy
+          dx * dx +
+          dy * dy
         );
 
-
-      /* Start dragging after moving 8px */
 
       if (
         distance > 8 &&
@@ -2000,16 +2914,22 @@
 
         touchDragging = true;
 
+
         dragGhost.style.display =
           "block";
 
+
         dragGhost.textContent =
-          muscles[touchMuscle].name;
+          muscles[
+            touchMuscle
+          ].name;
 
       }
 
 
-      if (!touchDragging) return;
+      if (!touchDragging) {
+        return;
+      }
 
 
       event.preventDefault();
@@ -2017,6 +2937,7 @@
 
       dragGhost.style.left =
         `${event.clientX}px`;
+
 
       dragGhost.style.top =
         `${event.clientY}px`;
@@ -2030,7 +2951,9 @@
 
 
       document
-        .querySelectorAll(".day.mobile-target")
+        .querySelectorAll(
+          ".day.mobile-target"
+        )
         .forEach(d => {
 
           d.classList.remove(
@@ -2057,12 +2980,33 @@
     }
 
 
-    function endMobileDrag(event) {
+    /* =========================
+       END MOBILE DRAG
+    ========================= */
 
-      if (!touchMuscle) return;
+    function endMobileDrag(
+      event
+    ) {
+
+      if (!touchMuscle) {
+        return;
+      }
 
 
-      /* If user actually dragged */
+      if (
+        !editMode
+      ) {
+
+        touchMuscle = null;
+
+        return;
+
+      }
+
+
+      /*
+        ACTUAL DRAG
+      */
 
       if (
         touchDragging &&
@@ -2074,6 +3018,7 @@
             currentDropDay.dataset.day
           );
 
+
         addWorkout(
           dayNumber,
           touchMuscle
@@ -2082,19 +3027,26 @@
       }
 
 
-      /* If it was just a tap */
+      /*
+        NORMAL TAP
+
+        Select muscle first.
+      */
 
       else if (!touchDragging) {
 
         clearSelectedMuscle();
 
+
         selectedMuscle =
           touchMuscle;
+
 
         const box =
           document.querySelector(
             `.muscle[data-muscle="${touchMuscle}"]`
           );
+
 
         if (box) {
 
@@ -2112,7 +3064,9 @@
 
 
       document
-        .querySelectorAll(".day.mobile-target")
+        .querySelectorAll(
+          ".day.mobile-target"
+        )
         .forEach(day => {
 
           day.classList.remove(
@@ -2123,13 +3077,17 @@
 
 
       touchMuscle = null;
+
       touchDragging = false;
+
       currentDropDay = null;
 
     }
 
 
-    /* Pointer events work on modern phones + desktop */
+    /* =========================
+       POINTER EVENTS
+    ========================= */
 
     document
       .querySelectorAll(".muscle")
@@ -2139,11 +3097,14 @@
           "pointerdown",
           event => {
 
-            /*
-              Only custom-handle touch/pen.
-              Desktop mouse continues using
-              native HTML drag & drop.
-            */
+            if (
+              !editMode
+            ) {
+
+              return;
+
+            }
+
 
             if (
               event.pointerType === "touch" ||
@@ -2154,6 +3115,7 @@
                 box,
                 event
               );
+
 
               box.setPointerCapture(
                 event.pointerId
@@ -2174,7 +3136,9 @@
               event.pointerType === "pen"
             ) {
 
-              moveMobileDrag(event);
+              moveMobileDrag(
+                event
+              );
 
             }
 
@@ -2191,7 +3155,9 @@
               event.pointerType === "pen"
             ) {
 
-              endMobileDrag(event);
+              endMobileDrag(
+                event
+              );
 
             }
 
@@ -2206,12 +3172,18 @@
             dragGhost.style.display =
               "none";
 
+
             touchMuscle = null;
+
             touchDragging = false;
+
             currentDropDay = null;
 
+
             document
-              .querySelectorAll(".day.mobile-target")
+              .querySelectorAll(
+                ".day.mobile-target"
+              )
               .forEach(day => {
 
                 day.classList.remove(
@@ -2226,9 +3198,9 @@
       });
 
 
-    /* --------------------------------
+    /* =========================
        PREVIOUS MONTH
-    -------------------------------- */
+    ========================= */
 
     document
       .getElementById("prevMonth")
@@ -2238,12 +3210,17 @@
 
           viewedMonth--;
 
-          if (viewedMonth < 0) {
+
+          if (
+            viewedMonth < 0
+          ) {
 
             viewedMonth = 11;
+
             viewedYear--;
 
           }
+
 
           clearSelectedMuscle();
 
@@ -2253,9 +3230,9 @@
       );
 
 
-    /* --------------------------------
+    /* =========================
        NEXT MONTH
-    -------------------------------- */
+    ========================= */
 
     document
       .getElementById("nextMonth")
@@ -2265,12 +3242,17 @@
 
           viewedMonth++;
 
-          if (viewedMonth > 11) {
+
+          if (
+            viewedMonth > 11
+          ) {
 
             viewedMonth = 0;
+
             viewedYear++;
 
           }
+
 
           clearSelectedMuscle();
 
@@ -2280,9 +3262,9 @@
       );
 
 
-    /* --------------------------------
+    /* =========================
        RESET MONTH
-    -------------------------------- */
+    ========================= */
 
     document
       .getElementById("resetBtn")
@@ -2290,13 +3272,20 @@
         "click",
         () => {
 
+          if (!editMode) {
+            return;
+          }
+
+
           const monthName =
             new Date(
               viewedYear,
               viewedMonth
             ).toLocaleString(
               "default",
-              { month: "long" }
+              {
+                month: "long"
+              }
             );
 
 
@@ -2330,9 +3319,11 @@
       );
 
 
-    /* --------------------------------
+    /* =========================
        START APP
-    -------------------------------- */
+    ========================= */
+
+    setEditMode(false);
 
     renderCalendar();
 
