@@ -224,6 +224,32 @@
       --c: var(--all);
     }
 
+    .custom-muscle-tools { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:14px; }
+    .custom-muscle-tools input[type="text"] { flex:1; min-width:150px; padding:10px 12px; color:var(--text); background:#0b1018; border:1px solid var(--border); border-radius:var(--radius-sm); font:inherit; font-size:13px; }
+    .custom-muscle-tools button { padding:10px 13px; color:var(--legs); background:color-mix(in srgb,var(--legs) 9%,transparent); border:1px solid color-mix(in srgb,var(--legs) 45%,transparent); border-radius:var(--radius-sm); font:600 12px Inter,sans-serif; cursor:pointer; }
+    .custom-muscle-note { margin-top:7px; color:var(--muted-2); font-size:11px; }
+
+    .muscle-modal { display:none; position:fixed; inset:0; z-index:1000; align-items:center; justify-content:center; padding:18px; }
+    .muscle-modal.open { display:flex; }
+    .muscle-modal-backdrop { position:absolute; inset:0; background:rgba(2,6,14,.78); backdrop-filter:blur(5px); }
+    .muscle-modal-panel { position:relative; width:min(100%,480px); max-height:min(80vh,680px); overflow:auto; background:#101722; border:1px solid var(--border); border-radius:16px; padding:20px; box-shadow:0 24px 80px #0009; color:var(--text); }
+    .muscle-modal-header { display:flex; justify-content:space-between; gap:14px; align-items:flex-start; margin-bottom:16px; }
+    .muscle-modal-header h2 { font-size:18px; margin:0; color:var(--text); }
+    .muscle-modal-header p { color:var(--muted-2); font-size:12px; margin:5px 0 0; }
+    .muscle-modal-close { border:0; background:transparent; color:var(--muted-2); font-size:27px; line-height:1; cursor:pointer; }
+    .muscle-manager-list { display:grid; gap:9px; }
+    .muscle-manager-row { display:flex; flex-wrap:wrap; align-items:center; gap:9px; padding:10px; border:1px solid var(--border); border-radius:11px; background:#0b1018; }
+    .muscle-manager-dot { width:10px; height:10px; border-radius:50%; flex:0 0 auto; }
+    .muscle-manager-name { flex:1; min-width:110px; font-size:13px; font-weight:600; overflow-wrap:anywhere; }
+    .muscle-manager-row input:not([type="color"]) { flex:1; min-width:110px; padding:8px 9px; color:var(--text); background:#111b29; border:1px solid var(--border); border-radius:8px; font:inherit; font-size:13px; }
+    .muscle-manager-row input[type="color"] { width:38px; height:34px; flex:0 0 38px; min-width:38px; padding:3px; border:1px solid var(--border); border-radius:8px; background:#111b29; cursor:pointer; }
+    .muscle-manager-row button,.muscle-modal-done { border:1px solid var(--border); background:#182334; color:var(--text); border-radius:8px; padding:7px 10px; font:600 12px Inter,sans-serif; cursor:pointer; }
+    .muscle-manager-row .danger { color:#ff8b96; border-color:#71343d; }
+    .muscle-modal-footer { display:flex; justify-content:flex-end; padding-top:15px; }
+    .muscle-modal-done { background:var(--legs); color:#071018; border-color:transparent; padding:9px 16px; }
+    .muscle-manager-empty { color:var(--muted-2); font-size:13px; text-align:center; padding:22px 8px; }
+    @media(max-width:520px) { .muscle-modal-panel { padding:16px; } }
+
     .instructions {
       margin-top: 18px;
 
@@ -1139,7 +1165,13 @@
         </div>
 
       </div>
-
+      <div class="custom-muscle-tools">
+        <input id="customMuscleName" type="text" maxlength="24" placeholder="Custom muscle group name">
+        <button id="addCustomMuscle" type="button">+ Add group</button>
+        <button id="manageCustomMuscles" type="button">Manage</button>
+      </div>
+      <div class="custom-muscle-note">Each new group gets a random color. Manage groups anytime.</div>
+      <div id="customMuscleFeedback" class="custom-muscle-note" role="status" aria-live="polite"></div>
 
       <div class="instructions">
 
@@ -1157,6 +1189,19 @@
 
     </div>
 
+
+    <!-- CUSTOM MUSCLE GROUPS MANAGER -->
+    <div id="muscleManagerModal" class="muscle-modal" aria-hidden="true">
+      <div class="muscle-modal-backdrop" data-close-muscle-modal></div>
+      <section class="muscle-modal-panel" role="dialog" aria-modal="true" aria-labelledby="muscleModalTitle">
+        <header class="muscle-modal-header">
+          <div><h2 id="muscleModalTitle">Manage muscle groups</h2><p>Rename or remove your custom groups.</p></div>
+          <button type="button" class="muscle-modal-close" data-close-muscle-modal aria-label="Close">×</button>
+        </header>
+        <div id="muscleManagerList" class="muscle-manager-list"></div>
+        <footer class="muscle-modal-footer"><button type="button" id="closeMuscleManager" class="muscle-modal-done">Done</button></footer>
+      </section>
+    </div>
 
     <!-- CALENDAR -->
 
@@ -1642,6 +1687,21 @@
     let selectedMuscle = null;
 
     let editMode = false;
+    const CUSTOM_KEY = "neon-gym-custom-muscles";
+    let customMuscles = [];
+    try { customMuscles = JSON.parse(localStorage.getItem(CUSTOM_KEY)) || []; } catch(e) {}
+    if (!Array.isArray(customMuscles)) customMuscles = [];
+    function saveCustomMuscles(){ localStorage.setItem(CUSTOM_KEY,JSON.stringify(customMuscles)); }
+    function registerCustom(){ customMuscles.forEach(g=>muscles[g.id]={name:g.name,colorClass:"custom",color:g.color}); }
+    function renderCustomMuscles(){
+      const picker=document.querySelector(".muscle-boxes");
+      picker.querySelectorAll(".muscle.custom").forEach(el=>el.remove());
+      registerCustom();
+      customMuscles.forEach(g=>{
+        const el=document.createElement("div"); el.className="muscle custom"; el.dataset.muscle=g.id;
+        el.draggable=true; el.textContent=g.name; el.style.setProperty("--c",g.color); picker.appendChild(el);
+      });
+    }
 
 
     const calendar =
@@ -2310,6 +2370,7 @@
 
       tag.className =
         `workout-tag ${muscles[muscle].colorClass}`;
+      if (muscles[muscle].color) tag.style.setProperty("--c",muscles[muscle].color);
 
 
       tag.dataset.muscle = muscle;
@@ -2419,83 +2480,25 @@
     ========================= */
 
     function updateProgress() {
-
-      const counts = {
-
-        legs: 0,
-        chest: 0,
-        shoulders: 0,
-        triceps: 0,
-        back: 0,
-        biceps: 0,
-        all: 0
-
-      };
-
-
-      Object.values(workoutData)
-        .forEach(dayWorkouts => {
-
-          if (!Array.isArray(dayWorkouts)) {
-            return;
-          }
-
-
-          dayWorkouts.forEach(muscle => {
-
-            if (
-              counts[muscle] !== undefined
-            ) {
-
-              counts[muscle]++;
-
-            }
-
-          });
-
-        });
-
-
-      const totalDays =
-        new Date(
-          viewedYear,
-          viewedMonth + 1,
-          0
-        ).getDate();
-
-
-      Object.keys(counts)
-        .forEach(muscle => {
-
-          const count =
-            counts[muscle];
-
-
-          const percentage =
-            (count / totalDays) * 100;
-
-
-          document.getElementById(
-            `${muscle}-count`
-          ).textContent =
-            `${count}/${totalDays} days`;
-
-
-          document.getElementById(
-            `${muscle}-progress`
-          ).style.width =
-            `${percentage}%`;
-
-        });
-
+      const counts={}; Object.keys(muscles).forEach(id=>counts[id]=0);
+      Object.values(workoutData).forEach(arr=>{if(Array.isArray(arr)) arr.forEach(id=>{if(counts[id]!==undefined)counts[id]++;});});
+      const list=document.querySelector(".progress-list");
+      list.querySelectorAll("[data-custom-progress]").forEach(el=>el.remove());
+      customMuscles.forEach(g=>{
+        const item=document.createElement("div"); item.className="progress-item"; item.dataset.customProgress=g.id;
+        const top=document.createElement("div"); top.className="progress-top";
+        const label=document.createElement("span"); const dot=document.createElement("span"); dot.className="dot"; dot.style.setProperty("--c",g.color);
+        label.append(dot,document.createTextNode(g.name));
+        const cnt=document.createElement("span"); cnt.className="progress-count"; cnt.id=g.id+"-count"; top.append(label,cnt);
+        const bar=document.createElement("div"); bar.className="progress-bar";
+        const fill=document.createElement("div"); fill.className="progress-fill"; fill.id=g.id+"-progress"; fill.style.setProperty("--c",g.color);
+        bar.append(fill); item.append(top,bar); list.append(item);
+      });
+      const days=new Date(viewedYear,viewedMonth+1,0).getDate();
+      Object.entries(counts).forEach(([id,n])=>{const c=document.getElementById(id+"-count"),f=document.getElementById(id+"-progress");if(c&&f){c.textContent=`${n}/${days} days`;f.style.width=(n/days*100)+"%";}});
     }
 
-
-    /* =========================
-       MONTHLY STATS
-    ========================= */
-
-    function updateMonthlyStats() {
+        function updateMonthlyStats() {
 
       const totalDays =
         new Date(
@@ -3318,6 +3321,90 @@
         }
       );
 
+
+    /* ========================= */
+    const musclePicker = document.querySelector(".muscle-boxes");
+    musclePicker.addEventListener("click",e=>{
+      const box=e.target.closest(".muscle.custom"); if(!box||!editMode)return;
+      clearSelectedMuscle(); selectedMuscle=box.dataset.muscle; box.classList.add("selected");
+    });
+    musclePicker.addEventListener("dragstart",e=>{
+      const box=e.target.closest(".muscle.custom"); if(!box)return;
+      if(!editMode){e.preventDefault();return;}
+      e.dataTransfer.setData("text/plain",box.dataset.muscle); box.classList.add("dragging");
+    });
+    musclePicker.addEventListener("dragend",e=>{const box=e.target.closest(".muscle.custom");if(box)box.classList.remove("dragging");});
+    const muscleModal=document.getElementById("muscleManagerModal");
+    const muscleManagerList=document.getElementById("muscleManagerList");
+    const customMuscleFeedback=document.getElementById("customMuscleFeedback");
+    const customPalette=["#ff6b6b","#ffa94d","#ffd43b","#69db7c","#38d9a9","#4dabf7","#748ffc","#b197fc","#f783ac","#e599f7","#63e6be","#a9e34b"];
+    function randomMuscleColor(){ return customPalette[Math.floor(Math.random()*customPalette.length)]; }
+    function openMuscleManager(){ renderMuscleManager(); muscleModal.classList.add("open"); muscleModal.setAttribute("aria-hidden","false"); }
+    function closeMuscleManager(){ muscleModal.classList.remove("open"); muscleModal.setAttribute("aria-hidden","true"); }
+    function renderMuscleManager(){
+      muscleManagerList.innerHTML="";
+      if(!customMuscles.length){ muscleManagerList.innerHTML='<div class="muscle-manager-empty">No custom groups yet. Add one from the page.</div>'; return; }
+      customMuscles.forEach(g=>{
+        const row=document.createElement("div"); row.className="muscle-manager-row"; row.dataset.id=g.id;
+        const dot=document.createElement("span"); dot.className="muscle-manager-dot"; dot.style.background=g.color;
+        const name=document.createElement("span"); name.className="muscle-manager-name"; name.textContent=g.name;
+        const color=document.createElement("input"); color.type="color"; color.className="custom-group-color"; color.value=g.color || "#748ffc"; color.title="Change group color"; color.setAttribute("aria-label",`Change ${g.name} color`);
+        const rename=document.createElement("button"); rename.type="button"; rename.textContent="Rename"; rename.className="rename-custom";
+        const remove=document.createElement("button"); remove.type="button"; remove.textContent="Delete"; remove.className="danger delete-custom";
+        row.append(dot,name,color,rename,remove); muscleManagerList.appendChild(row);
+      });
+    }
+
+    // Save a custom group's color as soon as the color picker changes.
+    muscleManagerList.addEventListener("input",e=>{
+      if(!e.target.matches(".custom-group-color")) return;
+      const row=e.target.closest(".muscle-manager-row");
+      if(!row) return;
+      const group=customMuscles.find(g=>g.id===row.dataset.id);
+      if(!group) return;
+      group.color=e.target.value;
+      row.querySelector(".muscle-manager-dot").style.background=group.color;
+      saveCustomMuscles();
+      renderCustomMuscles();
+      renderCalendar();
+      updateProgress();
+    });
+    document.getElementById("addCustomMuscle").addEventListener("click",()=>{
+      const input=document.getElementById("customMuscleName"),name=input.value.trim();
+      if(!name){customMuscleFeedback.textContent="Enter a muscle group name first.";input.focus();return;}
+      if(Object.values(muscles).some(m=>m.name.toLowerCase()===name.toLowerCase())){customMuscleFeedback.textContent="This group already exists.";return;}
+      customMuscles.push({id:"custom_"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),name,color:randomMuscleColor()});
+      saveCustomMuscles();renderCustomMuscles();updateProgress();input.value="";customMuscleFeedback.textContent="Group added.";
+    });
+    document.getElementById("manageCustomMuscles").addEventListener("click",openMuscleManager);
+    document.getElementById("closeMuscleManager").addEventListener("click",closeMuscleManager);
+    muscleModal.querySelectorAll("[data-close-muscle-modal]").forEach(el=>el.addEventListener("click",closeMuscleManager));
+    document.addEventListener("keydown",e=>{if(e.key==="Escape"&&muscleModal.classList.contains("open"))closeMuscleManager();});
+    muscleManagerList.addEventListener("click",e=>{
+      const row=e.target.closest(".muscle-manager-row"); if(!row)return;
+      const ix=customMuscles.findIndex(g=>g.id===row.dataset.id); if(ix<0)return;
+      const g=customMuscles[ix];
+      if(e.target.closest(".rename-custom")){
+        const name=document.createElement("input");name.type="text";name.maxLength=24;name.value=g.name;name.setAttribute("aria-label","New muscle group name");
+        const save=document.createElement("button");save.type="button";save.textContent="Save";
+        const cancel=document.createElement("button");cancel.type="button";cancel.textContent="Cancel";
+        row.querySelector(".muscle-manager-name").replaceWith(name);row.querySelector(".rename-custom").replaceWith(save);row.querySelector(".delete-custom").replaceWith(cancel);name.focus();
+        save.addEventListener("click",()=>{const next=name.value.trim();if(!next){name.setCustomValidity("Enter a name.");name.reportValidity();return;}
+          if(Object.entries(muscles).some(([id,m])=>id!==g.id&&m.name.toLowerCase()===next.toLowerCase())){name.setCustomValidity("That name already exists.");name.reportValidity();return;}
+          g.name=next;saveCustomMuscles();renderCustomMuscles();renderMuscleManager();renderCalendar();updateProgress();
+        });
+        cancel.addEventListener("click",renderMuscleManager);
+      }else if(e.target.closest(".delete-custom")){
+        const label=row.querySelector(".muscle-manager-name");
+        row.innerHTML="";const promptText=document.createElement("span");promptText.className="muscle-manager-name";promptText.textContent=`Delete ${g.name}?`;
+        const hint=document.createElement("small");hint.style.cssText="flex-basis:100%;color:var(--muted-2);font-size:11px";hint.textContent="Existing calendar entries for this group will also be removed.";
+        const yes=document.createElement("button");yes.type="button";yes.textContent="Delete group";yes.className="danger";
+        const no=document.createElement("button");no.type="button";no.textContent="Cancel";row.append(promptText,hint,yes,no);
+        yes.addEventListener("click",()=>{customMuscles.splice(ix,1);delete muscles[g.id];Object.keys(workoutData).forEach(day=>{workoutData[day]=(workoutData[day]||[]).filter(id=>id!==g.id);if(!workoutData[day].length)delete workoutData[day];});saveCustomMuscles();saveData();renderCustomMuscles();renderCalendar();updateProgress();renderMuscleManager();});
+        no.addEventListener("click",renderMuscleManager);
+      }
+    });
+    renderCustomMuscles();
 
     /* =========================
        START APP
